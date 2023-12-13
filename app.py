@@ -54,9 +54,8 @@ def summ_text(txt, max_tokens=150, temp=0.7, p=1, n=1):
                 top_p=p,
                 n=n,
             )
-        except openai.OpenAIError as e:
-            st.warning(
-                f"OpenAI Rate limit exceeded. Waiting for 60 seconds. Error: {e}")
+        except Exception as e:
+            st.warning(f"OpenAI Rate limit exceeded. Waiting for 60 seconds. Error: {e}")
             time.sleep(60)
     # print(response.choices[0].message.content)
     return response.choices[0].message.content
@@ -92,10 +91,6 @@ def ui_app():
     # Onclick the Summarize Button
     if st.button(label="Summarize"):
 
-        if open_ai_key:
-            OpenAI.api_key = open_ai_key
-            p_free_api_key = free_personal_key
-
         # checks whether the file is available
         if file is not None:
             # Load Spinner
@@ -128,7 +123,7 @@ def ui_app():
                     st.caption(summ_txt_val + "\n")
 
                     # Waiting for the next chunk to mitigate Open AI rate limit
-                    if (((i+1) < len(text_chunks)) and p_free_api_key):
+                    if (((i+1) < len(text_chunks))):
                         time.sleep(30)
                     else:
                         time.sleep(15)

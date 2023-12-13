@@ -1,0 +1,6 @@
+time
+openai
+streamlit
+os
+PyPDF2
+dotenv

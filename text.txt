@@ -1,0 +1,16 @@
+git init # Initialize a git repository
+git add . # Add files to your new commit
+git commit -m "first commit" # Make the commit
+git remote add origin <YOUR_REPOSITORY_URL> # Connects your local git repository to your remote Github one
+git push origin main # Pushes your code to your remote repo
+
+old 
+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
+
+new
+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
+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
+
+working
+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
+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

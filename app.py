@@ -60,7 +60,8 @@ def summ_text(txt, max_tokens=150, temp=0.7, p=1, n=1):
         except openai.OpenAIError as e:
             st.warning(
                 f"OpenAI Rate limit exceeded. Waiting for 60 seconds. Error: {e}")
-            time.sleep(60)
+            # time.sleep(60)
+            exit(1)
     # print(response.choices[0].message.content)
     return response.choices[0].message.content
 
@@ -76,6 +77,7 @@ def chunks(text, max_tokens=4096):
     # print(len(chunks), type(chunks), type(chunks[0]))
     return chunks
 
+
 def ui_app():
 
     # Stramlit Basic Page UI
@@ -83,10 +85,6 @@ def ui_app():
     st.title("PDF Summarizer App")
     st.caption("Powered by OpenAI & Streamlit")
     st.caption("Created by Abhishek Dey")
-
-    open_ai_key = st.text_input(label="Enter Your Open AI Key", type="password", placeholder="Give Open AI API Key")
-    free_personal_key = st.toggle(label="Personal Free API Key", value=True)
-    p_free_api_key = None
 
     # Capture the Input PDF File
     file = st.file_uploader(label="Upload Your PDF Here", type=[
@@ -102,10 +100,6 @@ def ui_app():
 
     # Onclick the Summarize Button
     if st.button(label="Summarize"):
-
-        if open_ai_key:
-            OpenAI.api_key = open_ai_key
-            p_free_api_key = free_personal_key
 
         # checks whether the file is available
         if file is not None:
@@ -143,8 +137,10 @@ def ui_app():
                     st.caption(summ_txt_val+"\n")
 
                     # Waiting for the next chunk to mitigate Open AI rate limit
-                    if (((i+1) < len(text_chunks)) and p_free_api_key):
+                    if (((i+1) < len(text_chunks))):
                         time.sleep(30)
+                    else:
+                        time.sleep(15)
 
             # print("Completed All Chuncks")
 
